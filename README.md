@@ -1,6 +1,6 @@
 # In-Context Meta LoRA Generation (IJCAI2025)
 
-[English](README.en.md) | [简体中文](README.md)  
+[English](README.en.md) | [简体中文](README.cn.md)  
 
 ![Pipeline](images/pipeline.jpg)
 
