@@ -1,13 +1,13 @@
-# In-Context Meta LoRA Reneration (IJCAI2025)
+# ICM-LoRA
 
 [English](README.en.md) | [简体中文](README.md)  
 
 ![Pipeline](images/pipeline.jpg)
 
-## 📌 数据准备
+## 📌 Data Preparation
 
-### 📂 数据集准备
-请将数据集下载至 `data` 文件夹。Florence2 训练格式如下：
+### 📂 Dataset Preparation
+Download the dataset to the `data` folder. The training format for Florence2 is as follows:
 
 ```json
 {
@@ -21,22 +21,22 @@
 
 ---
 
-## 🔧 训练 LoRA 参数
-使用 `train_lora` 文件夹下的 `train_lora_arg.py` 脚本对大模型进行 LoRA 微调，以生成不同 rank（1-8）的 LoRA 参数。
+## 🔧 Training LoRA Parameters
+Use the `train_lora_arg.py` script in the `train_lora` folder to fine-tune the large model with LoRA and generate LoRA parameters for different ranks (1-8).
 
 ---
 
-## 🔄 处理 LoRA 参数
-### 🔹 展平并归一化 LoRA 参数
-1. 运行 `utils/reformat_lora_param.py` 脚本，将原始 LoRA 参数标注 `epoch` 并移动到 `param` 文件夹。
-2. 运行 `utils/normalizeLoraWeight_small.py` 脚本，对 LoRA 参数进行展平和归一化。
-3. 观察展平后 LoRA 参数的维度，这将成为 CVAE 的 `input_dim`。
+## 🔄 Processing LoRA Parameters
+### 🔹 Flatten and Normalize LoRA Parameters
+1. Run the `reformat_lora_param.py` script to mark the original LoRA parameters with `epoch` and move them to the `param` folder.
+2. Run the `utils/normalizeLoraWeight_small.py` script to flatten and normalize the LoRA parameters.
+3. Observe the dimension of the flattened LoRA parameters, which will be used as `input_dim` for CVAE.
 
 ```bash
 #!/bin/bash
 
-SOURCE_PATH=../train_lora/model_checkpoints/xxxx # 例如 dog-r=8
-TARGET_PATH=../data/param_data/xxx  # 例如 dog-r=8
+SOURCE_PATH=../train_lora/model_checkpoints/xxxx # e.g., dog-r=8
+TARGET_PATH=../data/param_data/xxx  # e.g., dog-r=8
 
 python3 reformat_lora_param.py --source_path "$SOURCE_PATH" --target_path "$TARGET_PATH"
 python3 normalizeLoraWeight_small.py --dataset_path "$TARGET_PATH"
@@ -44,16 +44,16 @@ python3 normalizeLoraWeight_small.py --dataset_path "$TARGET_PATH"
 
 ---
 
-## 🏗️ 训练参数生成器
-### 🔹 获取 Task Vector
-使用 `ICL/last_time_step_icl.py` 脚本：
-- 修改数据集路径。
-- 指定 LoRA 微调模型。
-- 设置 `output_dir`，以获取最终的 `hidden_state` (`decoder_avg_hidden_state`)。
-- 观察 `task_vector` 形状，这将成为 CVAE 的 `condition_dim`。
+## 🏗️ Training the Parameter Generator
+### 🔹 Obtaining Task Vector
+Use the `ICL/last_time_step_icl.py` script:
+- Modify the dataset path.
+- Specify the LoRA fine-tuned model.
+- Set `output_dir` to obtain the final `hidden_state` (`decoder_avg_hidden_state`).
+- Observe the shape of the `task_vector`, which will be used as `condition_dim` for CVAE.
 
-### 🔹 训练 CVAE
-使用 `TrainScript_CVAE.py` 训练 CVAE 模型。
+### 🔹 Training CVAE
+Train the CVAE model using `TrainScript_CVAE.py`.
 
 ```bash
 python3 TrainScript_CVAE.py \
@@ -61,13 +61,13 @@ python3 TrainScript_CVAE.py \
   --condition_dim xxx \
   --input_dim xxxxx \
   --task_vector_path xxxxx \
-  --checkpoint_dir xxx
+  --checkpoint_dir xxx 
 ```
 
 ---
 
-## 🔄 LoRA 重建
-使用 `utils/ReconstructLora_cvae.py` 进行 LoRA 采样与重建。
+## 🔄 LoRA Reconstruction
+Use `utils/ReconstructLora_cvae.py` to sample and reconstruct LoRA.
 
 ```bash
 python3 ReconstructLora_cvae.py \
@@ -78,13 +78,13 @@ python3 ReconstructLora_cvae.py \
   --cvae_checkpoint_path xxx \
   --datasetname "dog-r=8" \
   --normalized_lora_path xxx \
-  --rank 8 # 可选：1, 2, 4, 8
+  --rank 8 # or 1, 2, 4, 8
 ```
 
 ---
 
-## ✅ 测试
-使用 `test.py` 进行测试。
+## ✅ Testing
+Run `test.py` to test the process.
 
 ```bash
 python3 test.py \
@@ -93,5 +93,3 @@ python3 test.py \
   --generated_lora xxx \
   --rank xxx
 ```
-
-
