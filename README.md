@@ -1,4 +1,4 @@
-# In-Context Meta LoRA Reneration (IJCAI2025)
+# In-Context Meta LoRA Generation (IJCAI2025)
 
 [English](README.en.md) | [简体中文](README.md)  
 
