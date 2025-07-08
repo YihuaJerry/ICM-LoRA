@@ -1,4 +1,4 @@
-# In-Context Meta LoRA Generation (IJCAI2025)
+# In-Context Meta LoRA Generation (Accepted by International Joint Conferences on Artificial Intelligence 2025)
 
 [English](README.en.md) | [简体中文](README.cn.md)  
 
