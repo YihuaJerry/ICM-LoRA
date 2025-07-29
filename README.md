@@ -40,7 +40,7 @@ Download the dataset to the `data` folder. The training format for Florence2 is 
 Use the `train_lora_arg.py` script in the `train_lora` folder to fine-tune the large model with LoRA and generate LoRA parameters for different ranks (1-8).
 
 
-### 🎒 Processing LoRA Parameters
+### Processing LoRA Parameters
 1. Run the `reformat_lora_param.py` script to mark the original LoRA parameters with `epoch` and move them to the `param` folder.
 2. Run the `utils/normalizeLoraWeight_small.py` script to flatten and normalize the LoRA parameters.
 3. Observe the dimension of the flattened LoRA parameters, which will be used as `input_dim` for CVAE.
@@ -77,7 +77,7 @@ python3 TrainScript_CVAE.py \
 ```
 
 
-## 🔄 LoRA Reconstruction
+## 🎒 LoRA Reconstruction
 Use `utils/ReconstructLora_cvae.py` to sample and reconstruct LoRA.
 
 ```bash
